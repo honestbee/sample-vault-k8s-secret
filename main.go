@@ -92,7 +92,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 func envHandler(w http.ResponseWriter, r *http.Request) {
 	envList := os.Environ()
 	for _, v := range envList {
-		validEnv, _ := regexp.Compile("LC_.+")
+		validEnv, _ := regexp.Compile("SAMPLE_.+")
 		if validEnv.FindStringSubmatch(v) != nil {
 			fmt.Fprintln(w, v)
 		}

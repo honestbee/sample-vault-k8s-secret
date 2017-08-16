@@ -1,0 +1,27 @@
+workspace:
+  base: /go
+  path: src/github.com/honestbee/sample-vault-k8s-secret
+
+pipeline:
+  compile:
+    image: golang:1.8
+    commands:
+      - export PATH=$PATH:/go/bin
+      - mkdir bin
+      - go build -a -tags netgo -ldflags "-s -w -X main.build=${DRONE_BUILD_NUMBER}" -o bin/sample-vault-k8s-secret
+
+  publish:
+    image: plugins/docker
+    repo: quay.io/honestbee/sample-vault-k8s-secret
+    tags:
+      - "latest"
+      - ${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:8}
+    when:
+      branch: [master]
+
+  notify:
+    image: plugins/slack
+    webhook: ${SLACK_WEBHOOK}
+    channel: feed-devops
+    when:
+      status: [ success, failure ]

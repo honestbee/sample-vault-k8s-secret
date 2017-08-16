@@ -1,10 +1,7 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"html/template"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
@@ -15,6 +12,7 @@ type Page struct {
 	Body  []byte
 }
 
+/*
 var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
 var validPath = regexp.MustCompile("/(save|edit|view)/([a-zA-Z0-9]+)$")
 
@@ -48,7 +46,6 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 	}
 }
 
-/* Handler */
 
 func viewHandler(w http.ResponseWriter, r *http.Request) {
 	title, err := getTitle(w, r)
@@ -88,6 +85,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/view/"+title, http.StatusFound)
 }
+*/
 
 func envHandler(w http.ResponseWriter, r *http.Request) {
 	envList := os.Environ()
@@ -100,9 +98,9 @@ func envHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/view/", viewHandler)
+	/*http.HandleFunc("/view/", viewHandler)
 	http.HandleFunc("/edit/", editHandler)
-	http.HandleFunc("/save/", saveHandler)
+	http.HandleFunc("/save/", saveHandler)*/
 	http.HandleFunc("/", envHandler)
 	http.ListenAndServe(":8080", nil)
 }

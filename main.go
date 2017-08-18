@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
@@ -97,10 +98,19 @@ func envHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func fileHandler(w http.ResponseWriter, r *http.Request) {
+	data, err := ioutil.ReadFile("config/application.yaml")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+	}
+	fmt.Fprintf(w, string(data))
+}
+
 func main() {
 	/*http.HandleFunc("/view/", viewHandler)
 	http.HandleFunc("/edit/", editHandler)
 	http.HandleFunc("/save/", saveHandler)*/
-	http.HandleFunc("/", envHandler)
+	http.HandleFunc("/env/", envHandler)
+	http.HandleFunc("/file/", fileHandler)
 	http.ListenAndServe(":8080", nil)
 }

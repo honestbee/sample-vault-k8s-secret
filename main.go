@@ -99,7 +99,7 @@ func envHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func fileHandler(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadFile("config/application.yaml")
+	data, err := ioutil.ReadFile("/app/config/application.yaml")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
